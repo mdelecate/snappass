@@ -1,6 +1,45 @@
-Forked to fix an issue with the shareable token links leading to a "500 Internal Server Error" page when deployed on a domain via cPanel's Application Manager (which uses Passenger).
+Fork Notes
+--------
+Forked to fix an issue with the shareable token links, as all URLs not pointing to the base domain lead to a "500 Internal Server Error" page when deployed via cPanel's Application Manager (which uses Passenger). 
 
-This fork fixes this by inserting the token into a query string, which fixes the issue.
+This fork fixes this by inserting the token into the URL as a query string, which fixes the issue. 
+
+Installation on WHM + cPanel + Apache
+--------
+1. On cPanel, open Files -> Git Version Control -> Create
+
+2. Create a Repository with these settings: 
+    Clone a Repository:     ON
+    Clone URL:              https://github.com/mdelecate/snappass.git
+    Repository Path:        public_html/snappass/repo
+    Repository Name:        SnapPass
+    Click Create
+    
+3. Open Software -> Application Manager -> Register Application 
+
+4. Deploy the following Application: 
+    Application Name:       SnapPass
+    Deployment Domain:      Pick your preferred domain
+    Base Application URL:   /
+    Application Path:       public_html/snappass/repo/snappass
+    Deployment Environment: Production
+    
+    Environment Variables -> Add Variable: 
+    Variable Name:          SECRET_KEY
+    Value:                  Input a random string characters (use a long string created by a random key/password generator)
+    Click Deploy
+    
+5. In the Application Manager, for the new SnapPass app, click "Ensure dependencies" to install all required software. 
+
+Done! Your app is now available on your preferred domain. 
+
+If there are problems, toggle Deployment Environment to Development to increase your chance of seeing helpful error messages. 
+
+It's strongly recommended to use a domain with an SSL certificate. WHM makes this easy with AutoSSL and Let's Encrypt. 
+It's strongly recommended to force a secure connection by going to cPanel -> Domains -> Force HTTPS Redirect. 
+
+/Fork Notes
+
 
 
 ========
