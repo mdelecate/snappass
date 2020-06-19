@@ -1,3 +1,8 @@
+Forked to fix an issue with the shareable token links leading to a "500 Internal Server Error" page when deployed on a domain via cPanel's Application Manager (which uses Passenger).
+
+This fork fixes this by inserting the token into a query string, which fixes the issue.
+
+
 ========
 SnapPass
 ========
