@@ -159,18 +159,27 @@ def index():
 
 @app.route('/', methods=['POST'])
 def handle_password():
-    ttl, password = clean_input()
-    token = set_password(password, ttl)
+    if empty(request.args.get('t')):
+        ttl, password = clean_input()
+        token = set_password(password, ttl)
 
-    if NO_SSL:
-        base_url = request.url_root
+        if NO_SSL:
+            base_url = request.url_root
+        else:
+            base_url = request.url_root.replace("http://", "https://")
+        if URL_PREFIX:
+            base_url = base_url + URL_PREFIX.strip("/") + "/"
+        link = base_url + "?t=" + url_quote_plus(token)
+        return render_template('confirm.html', password_link=link)
     else:
-        base_url = request.url_root.replace("http://", "https://")
-    if URL_PREFIX:
-        base_url = base_url + URL_PREFIX.strip("/") + "/"
-    link = base_url + "?t=" + url_quote_plus(token)
-    return render_template('confirm.html', password_link=link)
+        password_key = request.args.get('t')
+        password_key = url_unquote_plus(password_key)
+        password = get_password(password_key)
+        if not password:
+            abort(404)
 
+        return render_template('password.html', password=password)
+        
 
 @app.route('/', methods=['GET'])
 def preview_password():
@@ -184,13 +193,7 @@ def preview_password():
 
 @app.route('/', methods=['POST'])
 def show_password():
-    password_key = request.args.get('t')
-    password_key = url_unquote_plus(password_key)
-    password = get_password(password_key)
-    if not password:
-        abort(404)
-
-    return render_template('password.html', password=password)
+    
 
 
 @check_redis_alive
