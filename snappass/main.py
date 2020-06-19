@@ -168,7 +168,7 @@ def handle_password():
         base_url = request.url_root.replace("http://", "https://")
     if URL_PREFIX:
         base_url = base_url + URL_PREFIX.strip("/") + "/"
-    link = base_url + url_quote_plus(token)
+    link = base_url + "?t=" + url_quote_plus(token)
     return render_template('confirm.html', password_link=link)
 
 
