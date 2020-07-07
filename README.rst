@@ -1,6 +1,6 @@
 Fork Notes
 --------
-Forked to fix an issue with the shareable token links, as all URLs not pointing to the base domain lead to a "500 Internal Server Error" page when deployed via cPanel's Application Manager (which uses Passenger). 
+Forked the original from pinterest/snappass in order to fix an issue with the shareable token links, as all URLs not pointing to the base domain lead to a "500 Internal Server Error" page when deployed via cPanel's Application Manager (which uses Passenger). 
 
 This fork fixes this by inserting the token into the URL as a query string, which fixes the issue. 
 
